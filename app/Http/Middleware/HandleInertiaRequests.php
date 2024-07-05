@@ -42,6 +42,21 @@ class HandleInertiaRequests extends Middleware
                     'location' => $request->url(),
                 ]);
             },
+            'bodyClass' => $this->getBodyClass($request),
+            'auth' => [
+                'user' => $request->user(),
+            ],
         ]);
+    }
+
+    protected function getBodyClass(Request $request): String
+    {
+        if ($request->is('login')) {
+            return 'nk-body bg-white npc-default pg-auth';
+        } else if ($request->is('register')) {
+            return 'nk-body bg-lighter npc-default pg-auth';
+        }
+
+        return 'nk-body bg-lighter npc-default has-sidebar';
     }
 }

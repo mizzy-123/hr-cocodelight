@@ -13,6 +13,8 @@ createInertiaApp({
     setup({ el, App, props }) {
         window.route = (name, params, absolute) =>
             route(name, params, absolute, Ziggy);
+        const { bodyClass } = props.initialPage.props;
+        document.body.className = bodyClass;
         createRoot(el).render(<App {...props} />);
     },
 });

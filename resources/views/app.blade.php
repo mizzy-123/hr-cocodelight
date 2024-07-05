@@ -9,7 +9,7 @@
     @vite('resources/js/app.jsx')
     @inertiaHead
   </head>
-  <body class="nk-body bg-lighter npc-default has-sidebar">
+  <body>
     @inertia
     <script src="/assets/js/bundle.js?ver=3.0.0"></script>
     <script src="/assets/js/scripts.js?ver=3.0.0"></script>

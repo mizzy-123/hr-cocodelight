@@ -1,7 +1,47 @@
-import { Link } from "@inertiajs/react";
+import { Link, router, useForm, usePage } from "@inertiajs/react";
 import LayoutAuth from "./LayoutAuth";
+import { useEffect, useState } from "react";
 
 export default function Login() {
+    const { errors, csrf_token, flash } = usePage().props;
+    const {
+        data,
+        setData,
+        post,
+        processing,
+        errors: error,
+        reset,
+    } = useForm({
+        account: "",
+        password: "",
+    });
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        return () => {
+            reset("password");
+        };
+    }, []);
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        setLoading(true);
+
+        const formData = new FormData(e.currentTarget);
+        const account = formData.get("account");
+        const password = formData.get("password");
+
+        router.post(route("post.login"), {
+            _token: csrf_token,
+            account: account,
+            password: password,
+        });
+
+        router.on("finish", (event) => {
+            setLoading(false);
+        });
+    };
     return (
         <>
             <LayoutAuth>
@@ -18,7 +58,20 @@ export default function Login() {
                                 </div>
                             </div>
                         </div>
-                        <form action="html/index.html">
+                        {flash.success && (
+                            <div className="alert alert-success alert-icon">
+                                <em className="icon ni ni-check-circle"></em>{" "}
+                                <strong>Register successfull</strong>.{" "}
+                                {flash.success}
+                            </div>
+                        )}
+                        {flash.error && (
+                            <div className="alert alert-danger alert-icon">
+                                <em className="icon ni ni-cross-circle"></em>{" "}
+                                <strong>Login failed</strong>. {flash.error}
+                            </div>
+                        )}
+                        <form onSubmit={handleSubmit}>
                             <div className="form-group">
                                 <div className="form-label-group">
                                     <label
@@ -30,11 +83,19 @@ export default function Login() {
                                 </div>
                                 <div className="form-control-wrap">
                                     <input
+                                        name="account"
                                         type="text"
-                                        className="form-control form-control-lg"
+                                        className={`form-control form-control-lg ${
+                                            errors.account && "is-invalid"
+                                        }`}
                                         id="default-01"
                                         placeholder="Enter your email address or username"
                                     />
+                                    {errors.account && (
+                                        <div className="invalid-feedback">
+                                            {errors.account}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="form-group">
@@ -62,16 +123,39 @@ export default function Login() {
                                         <em className="passcode-icon icon-hide icon ni ni-eye-off"></em>
                                     </a>
                                     <input
+                                        name="password"
                                         type="password"
-                                        className="form-control form-control-lg"
+                                        className={`form-control form-control-lg ${
+                                            errors.password && "is-invalid"
+                                        }`}
                                         id="password"
                                         placeholder="Enter your passcode"
                                     />
+                                    {errors.account && (
+                                        <div className="invalid-feedback">
+                                            {errors.account}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                             <div className="form-group">
-                                <button className="btn btn-lg btn-primary btn-block">
-                                    Sign in
+                                <button
+                                    className="btn btn-lg btn-primary btn-block"
+                                    disabled={loading}
+                                >
+                                    {loading ? (
+                                        <>
+                                            <span
+                                                className="spinner-border spinner-border-sm"
+                                                aria-hidden="true"
+                                            ></span>
+                                            <span role="status">
+                                                Loading...
+                                            </span>
+                                        </>
+                                    ) : (
+                                        "Log In"
+                                    )}
                                 </button>
                             </div>
                         </form>

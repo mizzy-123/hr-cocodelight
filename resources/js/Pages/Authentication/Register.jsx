@@ -9,10 +9,11 @@ export default function Register() {
         e.preventDefault();
 
         setLoading(true);
+
         const formData = new FormData(e.currentTarget);
         const fullname = formData.get("fullname");
         const email = formData.get("email");
-        const usernmae = formData.get("username");
+        const username = formData.get("username");
         const password = formData.get("password");
         const password_confirmation = formData.get("password_confirmation");
 
@@ -20,9 +21,13 @@ export default function Register() {
             _token: csrf_token,
             fullname: fullname,
             email: email,
-            username: usernmae,
+            username: username,
             password: password,
             password_confirmation: password_confirmation,
+        });
+
+        router.on("finish", (event) => {
+            setLoading(false);
         });
     };
     return (

@@ -11,6 +11,8 @@ export default function Login() {
         processing,
         errors: error,
         reset,
+        hasErrors,
+        wasSuccessful,
     } = useForm({
         account: "",
         password: "",
@@ -28,20 +30,30 @@ export default function Login() {
 
         setLoading(true);
 
-        const formData = new FormData(e.currentTarget);
-        const account = formData.get("account");
-        const password = formData.get("password");
+        // const formData = new FormData(e.currentTarget);
+        // const account = formData.get("account");
+        // const password = formData.get("password");
 
-        router.post(route("post.login"), {
-            _token: csrf_token,
-            account: account,
-            password: password,
-        });
+        // router.post(route("post.login"), {
+        //     _token: csrf_token,
+        //     account: account,
+        //     password: password,
+        // });
 
-        router.on("finish", (event) => {
-            setLoading(false);
-        });
+        // router.on("finish", (event) => {
+        //     setLoading(false);
+        // });
+        post(route("post.login"));
     };
+
+    useEffect(() => {
+        if (hasErrors) {
+            setLoading(false);
+        } else if (wasSuccessful) {
+            setLoading(false);
+        }
+    }, [hasErrors, wasSuccessful]);
+
     return (
         <>
             <LayoutAuth>
@@ -90,6 +102,9 @@ export default function Login() {
                                         }`}
                                         id="default-01"
                                         placeholder="Enter your email address or username"
+                                        onChange={(e) =>
+                                            setData("account", e.target.value)
+                                        }
                                     />
                                     {errors.account && (
                                         <div className="invalid-feedback">
@@ -130,6 +145,9 @@ export default function Login() {
                                         }`}
                                         id="password"
                                         placeholder="Enter your passcode"
+                                        onChange={(e) =>
+                                            setData("password", e.target.value)
+                                        }
                                     />
                                     {errors.account && (
                                         <div className="invalid-feedback">

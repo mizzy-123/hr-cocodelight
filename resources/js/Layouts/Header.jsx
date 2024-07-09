@@ -17,13 +17,13 @@ export default function Header() {
                             <img
                                 className="logo-light logo-img"
                                 src="/images/logo.png"
-                                srcset="/images/logo2x.png 2x"
+                                srcSet="/images/logo2x.png 2x"
                                 alt="logo"
                             />
                             <img
                                 className="logo-dark logo-img"
                                 src="/images/logo-dark.png"
-                                srcset="/images/logo-dark2x.png 2x"
+                                srcSet="/images/logo-dark2x.png 2x"
                                 alt="logo-dark"
                             />
                         </a>
@@ -530,7 +530,7 @@ export default function Header() {
                                     <div className="dropdown-inner">
                                         <ul className="link-list">
                                             <li>
-                                                <a href="#">
+                                                <a href={route("logout")}>
                                                     <em className="icon ni ni-signout"></em>
                                                     <span>Sign out</span>
                                                 </a>

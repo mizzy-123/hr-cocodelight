@@ -13,19 +13,19 @@ export default function Sidebar() {
                         <img
                             className="logo-light logo-img"
                             src="/images/logo.png"
-                            srcset="/images/logo2x.png 2x"
+                            srcSet="/images/logo2x.png 2x"
                             alt="logo"
                         />
                         <img
                             className="logo-dark logo-img"
                             src="/images/logo-dark.png"
-                            srcset="/images/logo-dark2x.png 2x"
+                            srcSet="/images/logo-dark2x.png 2x"
                             alt="logo-dark"
                         />
                         <img
                             className="logo-small logo-img logo-img-small"
                             src="/images/logo-small.png"
-                            srcset="/images/logo-small2x.png 2x"
+                            srcSet="/images/logo-small2x.png 2x"
                             alt="logo-small"
                         />
                     </a>

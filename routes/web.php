@@ -24,6 +24,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', function () {
         return Inertia::render('Main/Dashboard');
     })->name('dashboard');
+
+    Route::get('/logout', [LoginController::class, 'destroy'])->name('logout');
 });
 
 Route::middleware('guest')->group(function () {

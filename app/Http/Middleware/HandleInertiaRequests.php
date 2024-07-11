@@ -51,6 +51,15 @@ class HandleInertiaRequests extends Middleware
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error')
             ],
+            'authorization' => function () use ($request) {
+                if ($request->user() != null) {
+                    return [
+                        'user' => fn () => $request->user()->can('user', $request->user()),
+                        'admin' => fn () => $request->user()->can('admin', $request->user()),
+                    ];
+                }
+            },
+            'date_now' => fn () => now()->format('Y-m-d'),
         ]);
     }
 

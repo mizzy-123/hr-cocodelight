@@ -52,7 +52,7 @@ class LoginController extends Controller
 
                 Log::info('Session regenerated.');
 
-                return redirect('/dashboard');
+                return redirect('/dashboard?date=' . now()->format('Y-m-d'));
             }
         } catch (\Throwable $th) {
             return redirect('/login')->with("error", $th->getMessage())->withInput();

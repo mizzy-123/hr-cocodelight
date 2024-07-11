@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId("users_id")->constrained("users")->onDelete("cascade");
             $table->foreignId("list_absensi_id")->constrained("list_absensi")->onDelete("cascade");
+            $table->time("jam_masuk");
+            $table->time("jam_keluar");
             $table->timestamps();
         });
     }

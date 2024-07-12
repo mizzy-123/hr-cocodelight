@@ -1,13 +1,65 @@
 import Layout from "@/Layouts/Layout";
-import { usePage } from "@inertiajs/react";
-import { useEffect } from "react";
+import { router, usePage } from "@inertiajs/react";
+import { useEffect, useState } from "react";
 
 export default function DashboardAdmin() {
     const { date_now, data_absen } = usePage().props;
+    const { url } = usePage();
+    const [inputDate, setInputDate] = useState(date_now);
 
     useEffect(() => {
         console.log(data_absen);
-    }, []);
+        const currentUrl = new URL(url, window.location.origin);
+        const params = new URLSearchParams(currentUrl.search);
+        setInputDate(params.get("date"));
+        console.log("url: ", currentUrl);
+    }, [inputDate]);
+
+    const handleClickExportPdf = (e) => {
+        e.preventDefault();
+        const currentUrl = new URL(url, window.location.origin);
+        const params = new URLSearchParams(currentUrl.search);
+        params.append("export", "pdf");
+        const resultUrl = `${currentUrl.origin}${
+            currentUrl.pathname
+        }?${params.toString()}`;
+        window.open(resultUrl, "_blank");
+    };
+
+    const handleChangeDate = (e) => {
+        // Ambil nilai dari input
+        let dateValue = e.target.value;
+
+        // Ubah format tanggal jika diperlukan
+        let formattedDate = formatDate(dateValue);
+
+        // Set nilai input dengan format yang diinginkan
+        // e.value = formattedDate;
+        const urlHref = new URL(window.location.href);
+        const params = new URLSearchParams(urlHref.search);
+        params.set("date", formattedDate);
+        const resultUrl = `${urlHref.origin}${
+            urlHref.pathname
+        }?${params.toString()}`;
+        router.get(resultUrl);
+        console.log(urlHref.search);
+    };
+
+    function formatDate(dateString) {
+        // Buat objek Date dari string tanggal
+        let dateObj = new Date(dateString);
+
+        // Ambil tahun, bulan, dan tanggal
+        let year = dateObj.getFullYear();
+        let month = ("0" + (dateObj.getMonth() + 1)).slice(-2); // Tambah 1 karena bulan dimulai dari 0
+        let day = ("0" + dateObj.getDate()).slice(-2);
+
+        // Gabungkan ke dalam format YYYY-MM-DD
+        let formattedDate = year + "-" + month + "-" + day;
+
+        return formattedDate;
+    }
+
     return (
         <>
             <Layout>
@@ -40,15 +92,17 @@ export default function DashboardAdmin() {
                                                             <div className="drodown">
                                                                 <div className="form-group">
                                                                     <div className="form-control-wrap">
-                                                                        <div className="form-icon form-icon-right">
+                                                                        {/* <div className="form-icon form-icon-right">
                                                                             <em className="icon ni ni-calendar-alt"></em>
-                                                                        </div>
+                                                                        </div> */}
                                                                         <input
-                                                                            type="text"
-                                                                            className="form-control date-picker"
-                                                                            data-date-format="yyyy-mm-dd"
+                                                                            type="date"
+                                                                            className="form-control"
                                                                             value={
-                                                                                date_now
+                                                                                inputDate
+                                                                            }
+                                                                            onChange={
+                                                                                handleChangeDate
                                                                             }
                                                                         />
                                                                     </div>
@@ -97,10 +151,14 @@ export default function DashboardAdmin() {
                                                             <a
                                                                 href="#"
                                                                 className="btn btn-primary"
+                                                                onClick={
+                                                                    handleClickExportPdf
+                                                                }
                                                             >
                                                                 <em className="icon ni ni-reports"></em>
                                                                 <span>
-                                                                    Reports
+                                                                    Export to
+                                                                    pdf
                                                                 </span>
                                                             </a>
                                                         </li>
@@ -118,7 +176,7 @@ export default function DashboardAdmin() {
                                                     <div className="card-title-group">
                                                         <div className="card-title">
                                                             <h6 className="title">
-                                                                Recent Orders
+                                                                Daftar absensi
                                                             </h6>
                                                         </div>
                                                     </div>

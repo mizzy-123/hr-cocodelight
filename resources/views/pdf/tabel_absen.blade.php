@@ -49,7 +49,7 @@
             <p>Alamat Perusahaan</p>
         </div>
         <div class="date">
-            Senin, 2 January 2024
+            {{ $date }}
         </div>
         <table>
             <thead>
@@ -62,20 +62,15 @@
                 </tr>
             </thead>
             <tbody>
+                @foreach ($data_absen as $item)
                 <tr>
-                    <td>1</td>
-                    <td>John Doe</td>
-                    <td>08:00</td>
-                    <td>17:00</td>
-                    <td>123456789</td>
+                    <td>{{ $loop->iteration }}</td>
+                    <td>{{ $item["user"]["fullname"] }}</td>
+                    <td>{{ $item["jam_masuk"] }}</td>
+                    <td>{{ $item["jam_keluar"] }}</td>
+                    <td>{{ $item["no_transfer"] }}</td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Jane Smith</td>
-                    <td>08:15</td>
-                    <td>17:15</td>
-                    <td>987654321</td>
-                </tr>
+                @endforeach
                 <!-- Tambahkan baris lain sesuai kebutuhan -->
             </tbody>
         </table>
